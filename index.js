@@ -2,8 +2,8 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
-const userRouter = require('./routes/User')
-const authRouter = require('./routes/auth')
+const userRouter = require('./src/routes/User')
+const authRouter = require('./src/routes/auth')
 
 dotenv.config()
 
