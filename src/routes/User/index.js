@@ -1,14 +1,14 @@
-const User = require("../../models/User");
-const { verifyToken, verifyTokenAndAuthorization } = require("../verifyToken");
+const User = require('../../models/User')
+const { verifyToken, verifyTokenAndAuthorization } = require('../verifyToken')
 
-const router = require("express").Router();
+const router = require('express').Router()
 
-router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.put('/:id', verifyTokenAndAuthorization, async (req, res) => {
   if (req.body.password) {
     req.body.password = CryptoJS.AES.encrypt(
       req.body.password,
-      process.env.PASS_SEC
-    ).toString();
+      process.env.PASS_SEC,
+    ).toString()
   }
 
   try {
@@ -17,31 +17,31 @@ router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
       {
         $set: req.body,
       },
-      { new: true }
-    );
-    res.status(200).json(updatedUser);
+      { new: true },
+    )
+    res.status(200).json(updatedUser)
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json(err)
   }
-});
+})
 
-router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.delete('/:id', verifyTokenAndAuthorization, async (req, res) => {
   try {
-    await User.findByIdAndDelete(req.params.id);
-    res.status(200).json("User has been deleted");
+    await User.findByIdAndDelete(req.params.id)
+    res.status(200).json('User has been deleted')
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json(err)
   }
-});
+})
 
-router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.get('/find/:id', verifyTokenAndAuthorization, async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
-    const { password, ...others } = user._doc;
-    res.status(200).json(others);
+    const user = await User.findById(req.params.id)
+    const { password, ...others } = user._doc
+    res.status(200).json(others)
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json(err)
   }
-});
+})
 
-module.exports = router;
+module.exports = router
