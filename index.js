@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
+const cors = require('cors')
 const userRouter = require('./src/routes/User')
 const authRouter = require('./src/routes/auth')
 const zingRouter = require('./src/routes/Zing')
@@ -14,6 +15,7 @@ mongoose
   .catch((err) => console.log(err))
 
 app.use(express.json())
+app.use(cors())
 
 app.use('/api/auth', authRouter)
 app.use('/api/users', userRouter)
