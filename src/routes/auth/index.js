@@ -3,6 +3,7 @@ const CryptoJS = require('crypto-js')
 const router = require('express').Router()
 const jwt = require('jsonwebtoken')
 
+// REGISTER
 router.post('/register', async (req, res) => {
   const newUser = new User({
     username: req.body.username,
@@ -10,30 +11,34 @@ router.post('/register', async (req, res) => {
     password: CryptoJS.AES.encrypt(req.body.password, process.env.PASS_SEC),
   })
   try {
+    const user = await User.findOne({ username: req.body.username })
+    if (user) throw { status: 401, message: 'Username already exists!' }
+    const userEmail = await User.findOne({ email: req.body.email })
+    if (userEmail) throw { status: 401, message: 'Email already exists!' }
+
     const savedUser = await newUser.save()
     res.status(201).json(savedUser)
-  } catch (err) {
-    res.status(500).json({ message: err.message })
+  } catch (error) {
+    if (error.status === 401) {
+      return res.status(401).json(error.message)
+    } else res.status(400).json({ message: 'Bad request!' })
   }
 })
 
-//LOGIN
+// LOGIN
 router.post('/login', async (req, res) => {
   try {
     const user = await User.findOne({
       username: req.body.username,
     })
-    console.log(user)
-    !user && res.status(401).json('Wrong username')
+    if (!user) throw { status: 401, message: 'Wrong username!' }
     const hashedPassword = CryptoJS.AES.decrypt(
       user.password,
       process.env.PASS_SEC,
     )
-
     const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8)
-
-    originalPassword !== req.body.password &&
-      res.status(401).json('Wrong password')
+    if (originalPassword !== req.body.password)
+      throw { status: 401, message: 'Wrong password!' }
 
     const accessToken = jwt.sign(
       {
@@ -44,8 +49,11 @@ router.post('/login', async (req, res) => {
     )
     const { password, ...others } = user._doc
     res.status(200).json({ ...others, accessToken })
-  } catch (err) {
-    res.status(500).json(err)
+  } catch (error) {
+    if (error.status === 401) {
+      return res.status(401).json(error.message)
+    }
+    res.status(400).json({ message: 'Bad request!' })
   }
 })
 
