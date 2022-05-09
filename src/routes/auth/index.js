@@ -31,6 +31,7 @@ router.post('/register', async (req, res) => {
   }
 })
 
+let accessToken
 // LOGIN
 router.post('/login', async (req, res) => {
   try {
@@ -47,7 +48,7 @@ router.post('/login', async (req, res) => {
     if (originalPassword !== req.body.password)
       throw { status: 401, type: 'password', message: 'Wrong password!' }
 
-    const accessToken = jwt.sign(
+    accessToken = jwt.sign(
       {
         id: user._id,
       },
@@ -56,6 +57,23 @@ router.post('/login', async (req, res) => {
     )
     const { password, ...others } = user._doc
     res.status(200).json({ ...others, accessToken })
+  } catch (error) {
+    if (error.status === 401) {
+      res.status(401).json(error)
+    } else res.status(400).json({ message: 'Bad request!' })
+  }
+})
+
+// LOG OUT
+router.post('/logout', async (req, res) => {
+  try {
+    const currentUser = await User.findOne({
+      username: req.body.username,
+    })
+    if (currentUser && accessToken) {
+      accessToken = null
+      res.status(200).json({ message: 'Logged out!' })
+    } else throw { status: 401, message: 'You are not logged in!' }
   } catch (error) {
     if (error.status === 401) {
       res.status(401).json(error)
