@@ -1,8 +1,8 @@
-# nottify-node# Nottify-Node
+# Nottify-node
 
-Mobile music-app's backend that store account's database which serves for login/logout features
+Backend server for Nottify
 
-# Local run
+## Local run
 
 * First you need to have a MongoDB's database.
 
@@ -20,19 +20,23 @@ Mobile music-app's backend that store account's database which serves for login/
 ```
 
 
-* Inside the root directory, you can run some built-in commands:
+* Inside the root directory, you can run this built-in command to start the local server:
 ```
     yarn start
 ```
-* If you see "Connected to the Database!" in the terminal then you are good to go.
+* If you see `Connected to the Database!` in the terminal then you are good to go.
 
 
-# Libraries and Frameworks
+## Libraries and Frameworks
 
----
+* `express-js`
+* `mongoose`
+* `nodemon`
+* `crypto-js`
+* `jsonwebtoken`
+* `zingmp3-api-full`
 
-# Contributors
----
+## Contributors
 
 * [Nguyễn Văn Nam](https://github.com/namnv2001)
 * [Trần Hải Ninh](https://github.com/NinhTH01)
