@@ -34,5 +34,5 @@ Mobile music-app's backend that store account's database which serves for login/
 # Contributors
 ---
 
-* Nguyễn Văn Nam (https://github.com/namnv2001)
-* Trần Hải Ninh (https://github.com/NinhTH01)
+* [Nguyễn Văn Nam](https://github.com/namnv2001)
+* [Trần Hải Ninh](https://github.com/NinhTH01)
