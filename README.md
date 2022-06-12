@@ -1,6 +1,6 @@
 # Nottify-node
 
-Backend server for Nottify
+Backend server for [Nottify](https://github.com/namnv2001/nottify-react-native)
 
 ## Local run
 
